@@ -64,3 +64,16 @@
 #memory-photo.active {
     opacity: 1; /* Muncul saat aktif */
 }
+/* Efek untuk foto */
+.memory-item {
+    transition: transform 0.3s;
+    cursor: pointer;
+}
+
+.memory-item:hover {
+    transform: scale(1.05);
+}
+
+#main-memory {
+    transition: opacity 1s;
+}
