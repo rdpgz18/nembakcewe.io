@@ -137,38 +137,84 @@ sendBtn.addEventListener("click", () => {
 });
 
 // ================== Galery ===============
-
 // Daftar foto kenangan (ganti dengan path foto kalian)
 const memories = [
-    "assets/images/memory1.jpg",
-    "assets/images/memory2.jpg",
-    "assets/images/memory3.jpg",
-    "assets/images/memory4.jpg",
+    { img: "assets/images/memory1.jpg", caption: "Foto pertama kita bersama ❤️" },
+    { img: "assets/images/memory2.jpg", caption: "Liburan pantai 🏖️" },
+    { img: "assets/images/memory3.jpg", caption: "Ulang tahunmu yang ke-21 🎂" },
+    // Tambahkan lebih banyak foto
 ];
 
-const memoryPhoto = document.getElementById("memory-photo");
-let currentIndex = 0;
-
-// Fungsi untuk mengganti foto
-function showNextMemory() {
-    // Fade-out foto saat ini
-    memoryPhoto.classList.remove("active");
+// Fungsi untuk menampilkan gallery
+function showMemoryGallery() {
+    const gallery = document.getElementById("memory-gallery");
+    const container = gallery.querySelector(".grid");
     
-    setTimeout(() => {
-        // Ganti sumber foto
-        currentIndex = (currentIndex + 1) % memories.length;
-        memoryPhoto.src = memories[currentIndex];
-        
-        // Fade-in foto baru
-        memoryPhoto.classList.add("active");
-    }, 1000); // Delay 1 detik untuk fade-out
+    // Kosongkan container terlebih dahulu
+    container.innerHTML = '';
+    
+    // Tambahkan semua foto ke grid
+    memories.forEach((memory, index) => {
+        const img = document.createElement("img");
+        img.src = memory.img;
+        img.alt = "Memory " + (index + 1);
+        img.className = "memory-item w-full h-24 md:h-32 object-cover rounded-lg";
+        img.onclick = () => showFullMemory(memory);
+        container.appendChild(img);
+    });
+    
+    // Tampilkan gallery
+    gallery.classList.remove("hidden");
 }
 
-// Mulai dengan foto pertama
-memoryPhoto.src = memories[0];
-memoryPhoto.onload = () => {
-    memoryPhoto.classList.add("active");
-};
+// Fungsi untuk menampilkan foto besar
+function showFullMemory(memory) {
+    const mainImg = document.getElementById("main-memory");
+    mainImg.src = memory.img;
+    mainImg.alt = memory.caption;
+    mainImg.classList.remove("hidden");
+    
+    // Scroll ke foto
+    mainImg.scrollIntoView({ behavior: "smooth" });
+}
 
-// Otomatis ganti foto setiap 3 detik
-setInterval(showNextMemory, 3000);
+// Modifikasi flow chat
+const messages = [
+    { sender: "bot", text: "Hai! Aku bukan AI biasa. Aku punya pertanyaan spesial buat kamu..." },
+    { sender: "user", text: "Apa?", delay: 1000 },
+    { 
+        sender: "bot", 
+        text: "Fakta tentang aku:\n- RAM: Cukup buat menyimpan semua moment sama kamu\n- Storage: Penuh dengan foto kamu\n- Algorithm: Selalu mengarah ke kamu\n\nMau bukti?",
+        delay: 1500,
+        action: () => {
+            // Tampilkan gallery setelah pesan ini
+            setTimeout(showMemoryGallery, 500);
+        }
+    },
+    // ... pesan selanjutnya
+];
+
+// Modifikasi fungsi processNextMessage
+function processNextMessage() {
+    if (currentMessage < messages.length) {
+        const msg = messages[currentMessage];
+        
+        if (msg.sender === "bot") {
+            simulateTyping(msg.text, () => {
+                // Jalankan aksi jika ada
+                if (msg.action) msg.action();
+                
+                currentMessage++;
+                if (currentMessage < messages.length && messages[currentMessage].sender === "user") {
+                    setTimeout(() => {
+                        addMessage("user", messages[currentMessage].text);
+                        currentMessage++;
+                        processNextMessage();
+                    }, messages[currentMessage].delay || 500);
+                } else {
+                    processNextMessage();
+                }
+            });
+        }
+    }
+}
