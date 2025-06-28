@@ -42,7 +42,16 @@ musicToggle.addEventListener("click", () => {
 const messages = [
     { sender: "bot", text: "Hai! Aku bukan AI biasa. Aku punya pertanyaan spesial buat kamu..." },
     { sender: "user", text: "Apa?", delay: 1000 },
-    { sender: "bot", text: "Fakta tentang aku:\n- RAM: Cukup buat menyimpan semua moment sama kamu.\n- Storage: Penuh dengan foto kamu.\n- Algorithm: Selalu mengarah ke kamu.\n\nMau bukti?", delay: 1500 },
+    { 
+        sender: "bot", 
+        text: "Fakta tentang aku:\n- RAM: Cukup buat menyimpan semua moment sama kamu\n- Storage: Penuh dengan foto kamu\n- Algorithm: Selalu mengarah ke kamu\n\nMau bukti?",
+        delay: 1500,
+        action: () => {
+            // Tampilkan gallery setelah pesan ini
+            setTimeout(showMemoryGallery, 500);
+        }
+    },
+    // ... pesan selanjutnya
 ];
 
 let currentMessage = 0;
@@ -80,6 +89,9 @@ function processNextMessage() {
         
         if (msg.sender === "bot") {
             simulateTyping(msg.text, () => {
+                // Jalankan aksi jika ada
+                if (msg.action) msg.action();
+                
                 currentMessage++;
                 if (currentMessage < messages.length && messages[currentMessage].sender === "user") {
                     setTimeout(() => {
@@ -92,7 +104,7 @@ function processNextMessage() {
                 }
             });
         }
-    } else {
+    }else{
         // Tampilkan tombol aksi setelah chat selesai
         inputBox.classList.add("hidden");
         actionButtons.classList.remove("hidden");
@@ -135,3 +147,48 @@ sendBtn.addEventListener("click", () => {
         userInput.value = "";
     }
 });
+
+
+// =============== GALERY ================= 
+// Daftar foto kenangan (ganti dengan path foto kalian)
+const memories = [
+    { img: "assets/images/memory1.jpg", caption: "Foto pertama kita bersama ❤️" },
+    { img: "assets/images/memory2.jpg", caption: "Liburan pantai 🏖️" },
+    { img: "assets/images/memory3.jpg", caption: "Ulang tahunmu yang ke-21 🎂" },
+    { img: "assets/images/memory4.jpg", caption: "Ulang tahunku yang ke-21 🎂" },
+    // Tambahkan lebih banyak foto
+];
+// Fungsi untuk menampilkan gallery
+function showMemoryGallery() {
+    const gallery = document.getElementById("memory-gallery");
+    const container = gallery.querySelector(".grid");
+    
+    // Kosongkan container terlebih dahulu
+    container.innerHTML = '';
+    
+    // Tambahkan semua foto ke grid
+    memories.forEach((memory, index) => {
+        const img = document.createElement("img");
+        img.src = memory.img;
+        img.alt = "Memory " + (index + 1);
+        img.className = "memory-item w-full h-24 md:h-32 object-cover rounded-lg";
+        img.onclick = () => showFullMemory(memory);
+        container.appendChild(img);
+    });
+    
+    // Tampilkan gallery
+    gallery.classList.remove("hidden");
+}
+// Fungsi untuk menampilkan foto besar
+function showFullMemory(memory) {
+    const mainImg = document.getElementById("main-memory");
+    mainImg.src = memory.img;
+    mainImg.alt = memory.caption;
+    mainImg.classList.remove("hidden");
+    
+    // Scroll ke foto
+    mainImg.scrollIntoView({ behavior: "smooth" });
+}
+
+
+
