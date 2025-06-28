@@ -135,3 +135,40 @@ sendBtn.addEventListener("click", () => {
         userInput.value = "";
     }
 });
+
+// ================== Galery ===============
+
+// Daftar foto kenangan (ganti dengan path foto kalian)
+const memories = [
+    "assets/images/memory1.jpg",
+    "assets/images/memory2.jpg",
+    "assets/images/memory3.jpg",
+    "assets/images/memory4.jpg",
+];
+
+const memoryPhoto = document.getElementById("memory-photo");
+let currentIndex = 0;
+
+// Fungsi untuk mengganti foto
+function showNextMemory() {
+    // Fade-out foto saat ini
+    memoryPhoto.classList.remove("active");
+    
+    setTimeout(() => {
+        // Ganti sumber foto
+        currentIndex = (currentIndex + 1) % memories.length;
+        memoryPhoto.src = memories[currentIndex];
+        
+        // Fade-in foto baru
+        memoryPhoto.classList.add("active");
+    }, 1000); // Delay 1 detik untuk fade-out
+}
+
+// Mulai dengan foto pertama
+memoryPhoto.src = memories[0];
+memoryPhoto.onload = () => {
+    memoryPhoto.classList.add("active");
+};
+
+// Otomatis ganti foto setiap 3 detik
+setInterval(showNextMemory, 3000);
