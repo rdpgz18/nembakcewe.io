@@ -49,31 +49,3 @@
 .dark ::-webkit-scrollbar-thumb {
     background: #6b7280;
 }
-
-.memory-gallery {
-    max-width: 600px;
-    margin: 20px auto;
-    position: relative;
-}
-
-#memory-photo {
-    opacity: 0; /* Awalnya hidden */
-    transition: opacity 1s ease-in-out;
-}
-
-#memory-photo.active {
-    opacity: 1; /* Muncul saat aktif */
-}
-/* Efek untuk foto */
-.memory-item {
-    transition: transform 0.3s;
-    cursor: pointer;
-}
-
-.memory-item:hover {
-    transform: scale(1.05);
-}
-
-#main-memory {
-    transition: opacity 1s;
-}
