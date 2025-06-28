@@ -42,16 +42,7 @@ musicToggle.addEventListener("click", () => {
 const messages = [
     { sender: "bot", text: "Hai! Aku bukan AI biasa. Aku punya pertanyaan spesial buat kamu..." },
     { sender: "user", text: "Apa?", delay: 1000 },
-    { 
-        sender: "bot", 
-        text: "Fakta tentang aku:\n- RAM: Cukup buat menyimpan semua moment sama kamu\n- Storage: Penuh dengan foto kamu\n- Algorithm: Selalu mengarah ke kamu\n\nMau bukti?",
-        delay: 1500,
-        action: () => {
-            // Tampilkan gallery setelah pesan ini
-            setTimeout(showMemoryGallery, 500);
-        }
-    },
-    // ... pesan selanjutnya
+    { sender: "bot", text: "Fakta tentang aku:\n- RAM: Cukup buat menyimpan semua moment sama kamu.\n- Storage: Penuh dengan foto kamu.\n- Algorithm: Selalu mengarah ke kamu.\n\nMau bukti?", delay: 1500 },
 ];
 
 let currentMessage = 0;
@@ -89,9 +80,6 @@ function processNextMessage() {
         
         if (msg.sender === "bot") {
             simulateTyping(msg.text, () => {
-                // Jalankan aksi jika ada
-                if (msg.action) msg.action();
-                
                 currentMessage++;
                 if (currentMessage < messages.length && messages[currentMessage].sender === "user") {
                     setTimeout(() => {
@@ -104,7 +92,7 @@ function processNextMessage() {
                 }
             });
         }
-    }else{
+    } else {
         // Tampilkan tombol aksi setelah chat selesai
         inputBox.classList.add("hidden");
         actionButtons.classList.remove("hidden");
@@ -112,18 +100,16 @@ function processNextMessage() {
 }
 
 // ================ TOMBOL AKSI ================
-document.getElementById("real-yes-btn").addEventListener("click", function() {
-    // Sembunyikan gallery dan tombol
-    document.getElementById("memory-gallery").classList.add("hidden");
-    this.classList.add("hidden");
-    
-    // Tampilkan pesan "Yeay!"
-    simulateTyping("Yeay! Sekarang aku bisa upgrade dari 'teman' ke 'pacar'. Love you 😊", () => {
-        confetti({
-            particleCount: 150,
-            spread: 70
-        });
-    });
+btnYes.addEventListener("click", () => {
+    addMessage("user", "Mau!");
+    simulateTyping("Yeay! Sekarang aku bisa upgrade dari 'teman' ke 'pacar'. Love you 💖", () => {
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    });
+    actionButtons.classList.add("hidden");
 });
 
 btnNo.addEventListener("mouseover", () => {
@@ -149,39 +135,3 @@ sendBtn.addEventListener("click", () => {
         userInput.value = "";
     }
 });
-
-
-// =============== GALERY ================= 
-// Daftar foto kenangan (ganti dengan path foto kalian)
-const memories = [
-    { img: "assets/images/memory1.jpg", caption: "Foto pertama kita bersama ❤️" },
-    { img: "assets/images/memory2.jpg", caption: "Liburan pantai 🏖️" },
-    { img: "assets/images/memory3.jpg", caption: "Ulang tahunmu yang ke-21 🎂" },
-    { img: "assets/images/memory4.jpg", caption: "Ulang tahunku yang ke-21 🎂" },
-    // Tambahkan lebih banyak foto
-];
-// Fungsi untuk menampilkan gallery
-functions showMemoryGallery()
-function showMemoryGallery() {
-    const gallery = document.getElementById("memory-gallery");
-    gallery.classList.remove("hidden");
-    
-    // Tampilkan tombol "Mau" setelah 3 detik
-    setTimeout(() => {
-        document.getElementById("confession-section").classList.remove("hidden");
-    }, 3000);
-}
-
-// Fungsi untuk menampilkan foto besar
-function showFullMemory(memory) {
-    const mainImg = document.getElementById("main-memory");
-    mainImg.src = memory.img;
-    mainImg.alt = memory.caption;
-    mainImg.classList.remove("hidden");
-    
-    // Scroll ke foto
-    mainImg.scrollIntoView({ behavior: "smooth" });
-}
-
-
-
