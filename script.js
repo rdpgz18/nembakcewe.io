@@ -112,16 +112,18 @@ function processNextMessage() {
 }
 
 // ================ TOMBOL AKSI ================
-btnYes.addEventListener("click", () => {
-    addMessage("user", "Mau!");
-    simulateTyping("Yeay! Sekarang aku bisa upgrade dari 'teman' ke 'pacar'. Love you 💖", () => {
-        confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 }
-        });
-    });
-    actionButtons.classList.add("hidden");
+document.getElementById("real-yes-btn").addEventListener("click", function() {
+    // Sembunyikan gallery dan tombol
+    document.getElementById("memory-gallery").classList.add("hidden");
+    this.classList.add("hidden");
+    
+    // Tampilkan pesan "Yeay!"
+    simulateTyping("Yeay! Sekarang aku bisa upgrade dari 'teman' ke 'pacar'. Love you 😊", () => {
+        confetti({
+            particleCount: 150,
+            spread: 70
+        });
+    });
 });
 
 btnNo.addEventListener("mouseover", () => {
@@ -159,26 +161,17 @@ const memories = [
     // Tambahkan lebih banyak foto
 ];
 // Fungsi untuk menampilkan gallery
+functions showMemoryGallery()
 function showMemoryGallery() {
-    const gallery = document.getElementById("memory-gallery");
-    const container = gallery.querySelector(".grid");
-    
-    // Kosongkan container terlebih dahulu
-    container.innerHTML = '';
-    
-    // Tambahkan semua foto ke grid
-    memories.forEach((memory, index) => {
-        const img = document.createElement("img");
-        img.src = memory.img;
-        img.alt = "Memory " + (index + 1);
-        img.className = "memory-item w-full h-24 md:h-32 object-cover rounded-lg";
-        img.onclick = () => showFullMemory(memory);
-        container.appendChild(img);
-    });
-    
-    // Tampilkan gallery
-    gallery.classList.remove("hidden");
+    const gallery = document.getElementById("memory-gallery");
+    gallery.classList.remove("hidden");
+    
+    // Tampilkan tombol "Mau" setelah 3 detik
+    setTimeout(() => {
+        document.getElementById("confession-section").classList.remove("hidden");
+    }, 3000);
 }
+
 // Fungsi untuk menampilkan foto besar
 function showFullMemory(memory) {
     const mainImg = document.getElementById("main-memory");
