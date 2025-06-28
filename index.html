@@ -36,11 +36,16 @@
             <div id="chat-container" class="space-y-4">
                 <!-- Pesan akan muncul di sini via JS -->
             </div>
+            <!-- Tempatkan ini setelah chat container -->
+<div id="memory-gallery" class="hidden mt-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+    <h3 class="text-center font-bold mb-4">Bukti Aku Selalu Memikirkan Kamu 💭</h3>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+        <!-- Foto akan dimasukkan via JS -->
+    </div>
+    <img id="main-memory" class="mt-4 w-full h-64 object-cover rounded-lg hidden">
+</div>
         </div>
-        <!-- Container Foto Kenangan -->
-        <div class="memory-gallery">
-            <img id="memory-photo" class="w-full h-64 md:h-96 object-cover rounded-lg shadow-lg transition-opacity duration-1000 opacity-0" src="" alt="Our Memory">
-        </div>
+        
 
         <!-- Input Box (Awal) -->
         <div id="input-box" class="flex gap-2">
