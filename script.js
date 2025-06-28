@@ -42,8 +42,16 @@ musicToggle.addEventListener("click", () => {
 const messages = [
     { sender: "bot", text: "Hai! Aku bukan AI biasa. Aku punya pertanyaan spesial buat kamu..." },
     { sender: "user", text: "Apa?", delay: 1000 },
-    { sender: "bot", text: "Fakta tentang aku:\n- RAM: Cukup buat menyimpan semua moment sama kamu.\n- Storage: Penuh dengan foto kamu.\n- Algorithm: Selalu mengarah ke kamu.\n\nMau bukti?", delay: 1500 },
-];
+    { 
+        sender: "bot", 
+        text: "Fakta tentang aku:\n- RAM: Cukup buat menyimpan semua moment sama kamu\n- Storage: Penuh dengan foto kamu\n- Algorithm: Selalu mengarah ke kamu\n\nMau bukti?",
+        delay: 1500,
+        action: () => {
+            // Tampilkan gallery setelah pesan ini
+            setTimeout(showMemoryGallery, 500);
+        }
+    },
+    ];
 
 let currentMessage = 0;
 
@@ -73,13 +81,16 @@ function simulateTyping(text, callback) {
         }
     }, 30);
 }
-
+// Modifikasi fungsi processNextMessage
 function processNextMessage() {
     if (currentMessage < messages.length) {
         const msg = messages[currentMessage];
         
         if (msg.sender === "bot") {
             simulateTyping(msg.text, () => {
+                // Jalankan aksi jika ada
+                if (msg.action) msg.action();
+                
                 currentMessage++;
                 if (currentMessage < messages.length && messages[currentMessage].sender === "user") {
                     setTimeout(() => {
@@ -92,10 +103,6 @@ function processNextMessage() {
                 }
             });
         }
-    } else {
-        // Tampilkan tombol aksi setelah chat selesai
-        inputBox.classList.add("hidden");
-        actionButtons.classList.remove("hidden");
     }
 }
 
@@ -178,43 +185,3 @@ function showFullMemory(memory) {
     mainImg.scrollIntoView({ behavior: "smooth" });
 }
 
-// Modifikasi flow chat
-const messages = [
-    { sender: "bot", text: "Hai! Aku bukan AI biasa. Aku punya pertanyaan spesial buat kamu..." },
-    { sender: "user", text: "Apa?", delay: 1000 },
-    { 
-        sender: "bot", 
-        text: "Fakta tentang aku:\n- RAM: Cukup buat menyimpan semua moment sama kamu\n- Storage: Penuh dengan foto kamu\n- Algorithm: Selalu mengarah ke kamu\n\nMau bukti?",
-        delay: 1500,
-        action: () => {
-            // Tampilkan gallery setelah pesan ini
-            setTimeout(showMemoryGallery, 500);
-        }
-    },
-    // ... pesan selanjutnya
-];
-
-// Modifikasi fungsi processNextMessage
-function processNextMessage() {
-    if (currentMessage < messages.length) {
-        const msg = messages[currentMessage];
-        
-        if (msg.sender === "bot") {
-            simulateTyping(msg.text, () => {
-                // Jalankan aksi jika ada
-                if (msg.action) msg.action();
-                
-                currentMessage++;
-                if (currentMessage < messages.length && messages[currentMessage].sender === "user") {
-                    setTimeout(() => {
-                        addMessage("user", messages[currentMessage].text);
-                        currentMessage++;
-                        processNextMessage();
-                    }, messages[currentMessage].delay || 500);
-                } else {
-                    processNextMessage();
-                }
-            });
-        }
-    }
-}
