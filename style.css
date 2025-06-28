@@ -1,0 +1,51 @@
+/* Animasi Typing */
+.typing {
+    display: inline-block;
+}
+
+.typing::after {
+    content: "|";
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Efek Tombol Kabur */
+.running-away {
+    animation: runAway 0.5s forwards;
+}
+
+@keyframes runAway {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(200px); opacity: 0; }
+}
+
+/* Scrollbar Custom */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: #374151;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #6b7280;
+}
